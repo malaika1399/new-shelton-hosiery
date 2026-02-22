@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – New Shelton Hosiery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--cream:#f8f3ee;--blush:#e8c9b8;--wine:#7a2c3e;--dark:#1a1218;--gold:#c9a96e;--warm-gray:#8a7f7a;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--dark);}
+    nav{position:sticky;top:0;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,243,238,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(122,44,62,0.12);}
+    .brand{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--wine);text-decoration:none;}
+    .brand span{font-style:italic;color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dark);text-decoration:none;}
+    .nav-links a:hover,.nav-links a.active{color:var(--wine);}
+    .nav-icons{display:flex;gap:20px;}
+    .nav-icons a{color:var(--dark);font-size:1rem;text-decoration:none;}
+    .nav-icons a:hover{color:var(--wine);}
+
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,#4a1828 100%);padding:70px 80px;text-align:center;}
+    .eyebrow{font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;}
+    .page-hero h1{font-family:'Playfair Display',serif;font-size:3rem;color:#fff;}
+    .page-hero h1 em{color:var(--blush);}
+    .page-hero p{color:rgba(255,255,255,0.55);font-size:0.9rem;margin-top:12px;font-weight:300;}
+
+    /* INFO CARDS */
+    .info-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;}
+    .info-card{padding:32px 28px;text-align:center;border-right:1px solid rgba(122,44,62,0.08);transition:background 0.2s;}
+    .info-card:last-child{border-right:none;}
+    .info-card:hover{background:var(--cream);}
+    .info-icon{width:52px;height:52px;background:linear-gradient(135deg,var(--wine),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.1rem;color:#fff;}
+    .info-title{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:8px;}
+    .info-detail{font-size:0.82rem;color:var(--warm-gray);line-height:1.6;font-weight:300;}
+    .info-detail a{color:var(--wine);text-decoration:none;}
+
+    /* CONTACT LAYOUT */
+    .contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:600px;}
+
+    .contact-form-col{padding:70px 80px;}
+    .form-header{margin-bottom:36px;}
+    .section-label{font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block;}
+    .section-title{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--dark);}
+    .section-title em{color:var(--wine);}
+
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-group{margin-bottom:18px;}
+    .form-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dark);margin-bottom:8px;display:block;}
+    .form-control{width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,0.2);background:#fff;font-family:'Jost',sans-serif;font-size:0.88rem;color:var(--dark);outline:none;transition:border-color 0.25s;resize:none;}
+    .form-control:focus{border-color:var(--wine);}
+    select.form-control{cursor:pointer;}
+
+    .btn-send{padding:15px 42px;background:var(--wine);color:#fff;border:none;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.25s;}
+    .btn-send:hover{background:var(--dark);}
+
+    .success-banner{background:#f0fdf4;border-left:3px solid #22c55e;padding:14px 18px;font-size:0.85rem;color:#16a34a;margin-bottom:20px;display:none;}
+
+    .map-col{background:#e0d4cc;position:relative;overflow:hidden;min-height:500px;}
+    .map-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,#d4c8c0,#c0b0a8);}
+    .map-pin{font-size:4rem;color:var(--wine);margin-bottom:16px;animation:bounce 1.5s infinite;}
+    @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+    .map-label{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:8px;}
+    .map-addr{font-size:0.85rem;color:var(--warm-gray);text-align:center;line-height:1.6;}
+
+    /* FAQ */
+    .faq-section{padding:80px;background:#f0e9e3;}
+    .section-header{text-align:center;margin-bottom:50px;}
+    .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px;margin:0 auto;}
+    .faq-item{background:#fff;border-bottom:2px solid transparent;transition:border-color 0.2s;}
+    .faq-item:hover{border-bottom-color:var(--wine);}
+    .faq-q{padding:20px 24px;font-size:0.88rem;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--dark);}
+    .faq-q i{font-size:0.75rem;color:var(--warm-gray);transition:transform 0.3s;}
+    .faq-item.open .faq-q i{transform:rotate(180deg);}
+    .faq-a{display:none;padding:0 24px 20px;font-size:0.84rem;color:var(--warm-gray);line-height:1.8;font-weight:300;}
+    .faq-item.open .faq-a{display:block;}
+
+    footer{background:var(--dark);padding:30px 80px;display:flex;justify-content:space-between;align-items:center;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.78rem;}
+    .social-links{display:flex;gap:12px;}
+    .social-link{width:34px;height:34px;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.8rem;transition:all 0.2s;}
+    .social-link:hover{background:var(--wine);color:#fff;border-color:var(--wine);}
+
+    @media(max-width:1000px){.info-strip{grid-template-columns:repeat(2,1fr);}.contact-layout{grid-template-columns:1fr;}.map-col{min-height:320px;}.contact-form-col{padding:50px 40px;}.faq-section{padding:50px 24px;}.faq-grid{grid-template-columns:1fr;}.page-hero{padding:50px 24px;}.footer{padding:24px;flex-direction:column;gap:16px;}}
+    @media(max-width:680px){.nav-links{display:none;}.form-row{grid-template-columns:1fr;}.info-strip{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="brand">New Shelton <span>Hosiery</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/shop.html">Shop</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="/cart.html"><i class="fas fa-shopping-bag"></i></a>
+    <a href="/login.html"><i class="fas fa-user"></i></a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <span class="eyebrow">We'd Love to Hear From You</span>
+  <h1>Get In <em>Touch</em></h1>
+  <p>Questions, feedback, or just want to say hello? We're here for you.</p>
+</div>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-card">
+    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+    <h3 class="info-title">Visit Us</h3>
+    <p class="info-detail">Main Textile Market, Near GT Road<br>Gujranwala, Punjab – Pakistan</p>
+  </div>
+  <div class="info-card">
+    <div class="info-icon"><i class="fas fa-phone"></i></div>
+    <h3 class="info-title">Call Us</h3>
+    <p class="info-detail"><a href="tel:+929876543210">+92 98765 43210</a><br>Mon–Sat: 10am – 7pm</p>
+  </div>
+  <div class="info-card">
+    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+    <h3 class="info-title">Email Us</h3>
+    <p class="info-detail"><a href="/cdn-cgi/l/email-protection#87efe2ebebe8c7e9e2f0f4efe2ebf3e8e9a9eee9"><span class="__cf_email__" data-cfemail="046c6168686b446a6173776c6168706b6a2a6d6a">[email&#160;protected]</span></a><br>Reply within 24 hours</p>
+  </div>
+  <div class="info-card">
+    <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
+    <h3 class="info-title">WhatsApp</h3>
+    <p class="info-detail"><a href="#">+92 98765 43210</a><br>Quick support available</p>
+  </div>
+</div>
+
+<!-- CONTACT FORM + MAP -->
+<div class="contact-layout">
+  <div class="contact-form-col">
+    <div class="form-header">
+      <span class="section-label">Send a Message</span>
+      <h2 class="section-title">Let's <em>Talk</em></h2>
+    </div>
+
+    <div class="success-banner" id="successBanner"><i class="fas fa-check-circle"></i> &nbsp; Your message has been sent! We'll get back to you within 24 hours.</div>
+
+    <form id="contactForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name *</label>
+          <input type="text" class="form-control" placeholder="Priya Sharma" required id="cname"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input type="email" class="form-control" placeholder="you@email.com" required id="cemail"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-control" placeholder="+92 98765 43210" id="cphone"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject *</label>
+          <select class="form-control" required id="csubject">
+            <option value="">Select a Topic</option>
+            <option>Order Inquiry</option>
+            <option>Return / Exchange</option>
+            <option>Product Question</option>
+            <option>Bulk / Wholesale Order</option>
+            <option>Feedback</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Message *</label>
+        <textarea class="form-control" rows="5" placeholder="Write your message here..." required id="cmessage"></textarea>
+      </div>
+      <button type="submit" class="btn-send"><i class="fas fa-paper-plane" style="margin-right:8px;"></i>Send Message</button>
+    </form>
+  </div>
+
+  <div class="map-col">
+    <div class="map-placeholder" style="position:relative;padding:0;">
+      <img src="images/banner-sale.jpg" alt="Our Location" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;"/>
+      <div style="position:absolute;inset:0;background:rgba(13,11,14,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div class="map-pin"><i class="fas fa-map-marker-alt"></i></div>
+      <p class="map-label">New Shelton Hosiery</p>
+      <p class="map-addr">Main Textile Market, Near GT Road<br>Gujranwala, Punjab – Pakistan<br><br>
+        <i class="fas fa-clock" style="color:var(--gold);"></i> Mon–Sat: 10:00 AM – 7:00 PM
+      </p>
+      <br/>
+      <a href="https://maps.google.com" target="_blank" style="font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--wine);border:1px solid var(--wine);padding:10px 20px;text-decoration:none;margin-top:10px;display:inline-block;transition:all 0.2s;">
+        <i class="fas fa-directions"></i> &nbsp; Get Directions
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="section-header">
+    <span class="section-label">Quick Answers</span>
+    <h2 class="section-title" style="font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--dark);">Frequently Asked <em style="color:var(--wine);">Questions</em></h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is your return policy? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">We accept returns within 7 days of delivery. Items must be unused, unwashed, and in original packaging. Please contact us to initiate a return.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do you offer free shipping? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Yes! We offer free shipping on all orders above Rs. 999. For orders below Rs. 999, a flat shipping fee of Rs. 79 applies.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How long does delivery take? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Standard delivery takes 3–5 business days for most locations. Express delivery (1–2 days) is available for select cities at an additional cost.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Are the products genuine? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Absolutely. Every product is manufactured by us at our own facility in Gujranwala. We use 100% genuine premium yarns and provide quality assurance on every piece.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do you offer bulk/wholesale orders? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Yes, we welcome wholesale and bulk orders. Please email us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a4ccc1c8c8cbe4cac1d3d7ccc1c8d0cbca8acdca">[email&#160;protected]</a> or call us to discuss pricing and minimum order quantities.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I track my order? <i class="fas fa-chevron-down"></i></div>
+      <div class="faq-a">Once your order is dispatched, you will receive a tracking link via email and SMS. You can also log in to your account to view your order status anytime.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 New Shelton Hosiery. All rights reserved.</p>
+  <div class="social-links">
+    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+    <a href="#" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  document.getElementById('contactForm').addEventListener('subm

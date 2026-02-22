@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop – New Shelton Hosiery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--cream:#f8f3ee;--blush:#e8c9b8;--wine:#7a2c3e;--dark:#1a1218;--gold:#c9a96e;--warm-gray:#8a7f7a;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--dark);}
+
+    nav{position:sticky;top:0;width:100%;z-index:100;padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,243,238,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(122,44,62,0.12);}
+    .brand{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--wine);text-decoration:none;}
+    .brand span{font-style:italic;color:var(--gold);}
+    .nav-links{display:flex;gap:32px;list-style:none;}
+    .nav-links a{font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dark);text-decoration:none;transition:color 0.2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--wine);}
+    .nav-icons{display:flex;gap:20px;}
+    .nav-icons a{color:var(--dark);font-size:1rem;text-decoration:none;transition:color 0.2s;}
+    .nav-icons a:hover{color:var(--wine);}
+
+    /* HERO BANNER */
+    .shop-hero{background:linear-gradient(135deg,var(--wine) 0%,#4a1828 100%);padding:60px 80px;display:flex;align-items:center;justify-content:space-between;}
+    .shop-hero h1{font-family:'Playfair Display',serif;font-size:3rem;color:#fff;}
+    .shop-hero h1 em{color:var(--blush);}
+    .breadcrumb-wrap{display:flex;gap:8px;align-items:center;margin-top:12px;}
+    .breadcrumb-wrap a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;}
+    .breadcrumb-wrap span{color:rgba(255,255,255,0.35);font-size:0.8rem;}
+    .shop-hero-right{text-align:right;}
+    .result-count{color:rgba(255,255,255,0.7);font-size:0.85rem;}
+    .result-num{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);display:block;}
+
+    /* SHOP LAYOUT */
+    .shop-wrapper{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:80vh;}
+
+    /* SIDEBAR */
+    .sidebar{background:#fff;padding:36px 28px;border-right:1px solid rgba(122,44,62,0.1);}
+    .filter-section{margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid rgba(122,44,62,0.08);}
+    .filter-title{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+    .filter-title i{font-size:0.65rem;color:var(--warm-gray);}
+
+    .filter-option{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;}
+    .filter-option input{accent-color:var(--wine);width:15px;height:15px;}
+    .filter-option label{font-size:0.85rem;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;width:100%;}
+    .filter-option label span{color:var(--warm-gray);font-size:0.75rem;}
+
+    .price-range{margin-top:10px;}
+    .price-inputs{display:flex;gap:10px;margin-top:12px;}
+    .price-input{flex:1;padding:8px 10px;border:1px solid rgba(122,44,62,0.2);font-family:'Jost',sans-serif;font-size:0.82rem;outline:none;}
+    .price-input:focus{border-color:var(--wine);}
+
+    .color-filter{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+    .color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s;}
+    .color-swatch:hover,.color-swatch.active{border-color:var(--dark);}
+
+    .size-filter{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+    .size-btn{padding:6px 14px;border:1px solid rgba(122,44,62,0.2);font-size:0.78rem;cursor:pointer;background:transparent;transition:all 0.2s;}
+    .size-btn:hover,.size-btn.active{background:var(--wine);color:#fff;border-color:var(--wine);}
+
+    .btn-apply{width:100%;padding:12px;background:var(--wine);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:8px;}
+    .btn-apply:hover{background:var(--dark);}
+    .btn-clear{width:100%;padding:10px;background:transparent;color:var(--warm-gray);border:1px solid rgba(122,44,62,0.2);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all 0.2s;}
+    .btn-clear:hover{border-color:var(--wine);color:var(--wine);}
+
+    /* PRODUCTS AREA */
+    .products-area{padding:28px 36px;}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+    .toolbar-left{display:flex;gap:10px;flex-wrap:wrap;}
+    .tag-filter{padding:7px 18px;border:1px solid rgba(122,44,62,0.2);background:transparent;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;color:var(--dark);}
+    .tag-filter.active,.tag-filter:hover{background:var(--wine);color:#fff;border-color:var(--wine);}
+    .toolbar-right{display:flex;align-items:center;gap:14px;}
+    .sort-select{padding:8px 14px;border:1px solid rgba(122,44,62,0.2);background:#fff;font-family:'Jost',sans-serif;font-size:0.82rem;color:var(--dark);outline:none;cursor:pointer;}
+    .view-toggle{display:flex;gap:4px;}
+    .view-btn{width:34px;height:34px;border:1px solid rgba(122,44,62,0.2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--warm-gray);transition:all 0.2s;}
+    .view-btn.active,.view-btn:hover{background:var(--wine);color:#fff;border-color:var(--wine);}
+
+    .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+    .products-grid.list-view{grid-template-columns:1fr;}
+
+    .product-card{background:#fff;transition:transform 0.3s,box-shadow 0.3s;position:relative;}
+    .product-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(26,18,24,0.1);}
+    .product-img-wrap{position:relative;overflow:hidden;aspect-ratio:3/4;}
+    .product-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:rgba(255,255,255,0.45);}
+    .p1{background:linear-gradient(145deg,#b56a7a,#d4a0a8);}
+    .p2{background:linear-gradient(145deg,#5a6a8a,#8aa0c0);}
+    .p3{background:linear-gradient(145deg,#7a6a4a,#c0a870);}
+    .p4{background:linear-gradient(145deg,#6a4a7a,#a078b8);}
+    .p5{background:linear-gradient(145deg,#4a7a6a,#78b8a0);}
+    .p6{background:linear-gradient(145deg,#8a5a4a,#c89080);}
+    .p7{background:linear-gradient(145deg,#7a7a4a,#c0c078);}
+    .p8{background:linear-gradient(145deg,#4a5a7a,#78a0c8);}
+    .p9{background:linear-gradient(145deg,#7a4a6a,#c07890);}
+    .p10{background:linear-gradient(145deg,#4a7a7a,#78c0c0);}
+    .p11{background:linear-gradient(145deg,#6a7a4a,#a0c078);}
+    .p12{background:linear-gradient(145deg,#7a5a4a,#c0907a);}
+
+    .product-actions{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:7px;transform:translateX(45px);opacity:0;transition:all 0.3s;}
+    .product-card:hover .product-actions{transform:translateX(0);opacity:1;}
+    .action-btn{width:34px;height:34px;background:rgba(255,255,255,0.92);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.82rem;color:var(--dark);transition:all 0.2s;}
+    .action-btn:hover{background:var(--wine);color:#fff;}
+    .product-badge{position:absolute;top:12px;left:12px;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;}
+    .badge-new{background:var(--gold);color:#fff;}
+    .badge-sale{background:var(--wine);color:#fff;}
+    .badge-hot{background:var(--dark);color:#fff;}
+
+    .product-info{padding:16px 14px 18px;}
+    .product-cat{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--warm-gray);margin-bottom:5px;}
+    .product-name{font-family:'Playfair Display',serif;font-size:0.98rem;color:var(--dark);margin-bottom:8px;line-height:1.3;}
+    .product-name a{color:inherit;text-decoration:none;}
+    .product-name a:hover{color:var(--wine);}
+    .product-price-wrap{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+    .product-price{font-size:0.98rem;color:var(--wine);font-weight:500;}
+    .product-price-old{font-size:0.82rem;color:var(--warm-gray);text-decoration:line-through;}
+    .rating{font-size:0.72rem;color:var(--gold);margin-bottom:10px;letter-spacing:2px;}
+    .rating span{color:var(--warm-gray);margin-left:4px;}
+    .color-dots{display:flex;gap:5px;margin-bottom:12px;}
+    .color-dot{width:13px;height:13px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s;}
+    .color-dot:hover,.color-dot.active{border-color:var(--dark);}
+    .btn-add-cart{width:100%;padding:10px;background:transparent;border:1px solid var(--dark);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;color:var(--dark);}
+    .btn-add-cart:hover{background:var(--wine);color:#fff;border-color:var(--wine);}
+
+    /* LIST VIEW card style */
+    .products-grid.list-view .product-card{display:grid;grid-template-columns:200px 1fr;}
+    .products-grid.list-view .product-img-wrap{aspect-ratio:auto;height:220px;}
+    .products-grid.list-view .product-info{padding:24px;}
+    .products-grid.list-view .product-name{font-size:1.2rem;}
+
+    .pagination{display:flex;justify-content:center;gap:8px;margin-top:40px;}
+    .page-btn{width:38px;height:38px;border:1px solid rgba(122,44,62,0.2);background:transparent;cursor:pointer;font-size:0.85rem;transition:all 0.2s;color:var(--dark);}
+    .page-btn.active,.page-btn:hover{background:var(--wine);color:#fff;border-color:var(--wine);}
+
+    /* TOAST */
+    .toast-wrap{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:999;}
+    .toast-msg{background:var(--dark);color:#fff;padding:13px 26px;font-size:0.82rem;letter-spacing:0.08em;transform:translateY(80px);opacity:0;transition:all 0.4s;border-left:3px solid var(--gold);}
+    .toast-msg.show{transform:translateY(0);opacity:1;}
+
+    footer{background:var(--dark);padding:30px 80px;text-align:center;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.8rem;}
+
+    @media(max-width:1100px){.shop-wrapper{grid-template-columns:220px 1fr;}.products-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){.shop-wrapper{grid-template-columns:1fr;}.sidebar{display:none;}.products-grid{grid-template-columns:repeat(2,1fr);}.shop-hero{padding:40px 24px;}.products-area{padding:20px;}.nav-links{display:none;}}
+    @media(max-width:480px){.products-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/index.html" class="brand">New Shelton <span>Hosiery</span></a>
+  <ul class="nav-links">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/shop.html" class="active">Shop</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <a href="#"><i class="fas fa-search"></i></a>
+    <a href="#"><i class="far fa-heart"></i></a>
+    <a href="/cart.html"><i class="fas fa-shopping-bag"></i></a>
+    <a href="/login.html"><i class="fas fa-user"></i></a>
+  </div>
+</nav>
+
+<!-- HERO BANNER -->
+<div class="shop-hero">
+  <div>
+    <h1>All <em>Sweaters</em></h1>
+    <div class="breadcrumb-wrap">
+      <a href="/index.html">Home</a>
+      <span>/</span>
+      <span style="color:rgba(255,255,255,0.85);">Shop</span>
+    </div>
+  </div>
+  <div class="shop-hero-right">
+    <span class="result-num">120+</span>
+    <span class="result-count">Products Available</span>
+  </div>
+</div>
+
+<div class="shop-wrapper">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <!-- Category -->
+    <div class="filter-section">
+      <div class="filter-title">Categories <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-option"><input type="checkbox" id="c1" checked/><label for="c1">All Sweaters <span>120</span></label></div>
+      <div class="filter-option"><input type="checkbox" id="c2"/><label for="c2">Woolen Classics <span>48</span></label></div>
+      <div class="filter-option"><input type="checkbox" id="c3"/><label for="c3">Cashmere Luxe <span>32</span></label></div>
+      <div class="filter-option"><input type="checkbox" id="c4"/><label for="c4">Cable Knit <span>56</span></label></div>
+      <div class="filter-option"><input type="checkbox" id="c5"/><label for="c5">Cardigans <span>40</span></label></div>
+      <div class="filter-option"><input type="checkbox" id="c6"/><label for="c6">Turtlenecks <span>28</span></label></div>
+    </div>
+
+    <!-- Price -->
+    <div class="filter-section">
+      <div class="filter-title">Price Range <i class="fas fa-chevron-down"></i></div>
+      <input type="range" min="200" max="5000" value="3000" style="width:100%;accent-color:var(--wine);" id="priceRange" oninput="document.getElementById('priceMax').value=this.value"/>
+      <div class="price-inputs">
+        <input type="number" class="price-input" placeholder="Rs. Min" value="200"/>
+        <input type="number" class="price-input" id="priceMax" placeholder="Rs. Max" value="3000"/>
+      </div>
+    </div>
+
+    <!-- Color -->
+    <div class="filter-section">
+      <div class="filter-title">Colors <i class="fas fa-chevron-down"></i></div>
+      <div class="color-filter">
+        <div class="color-swatch active" style="background:#b56a7a;" title="Rose"></div>
+        <div class="color-swatch" style="background:#5a6a8a;" title="Blue"></div>
+        <div class="color-swatch" style="background:#7a6a4a;" title="Camel"></div>
+        <div class="color-swatch" style="background:#6a4a7a;" title="Purple"></div>
+        <div class="color-swatch" style="background:#4a7a6a;" title="Green"></div>
+        <div class="color-swatch" style="background:#1a1218;" title="Black"></div>
+        <div class="color-swatch" style="background:#f0e8e0;" title="Cream" ;border:1px solid #ccc;"></div>
+        <div class="color-swatch" style="background:#c89080;" title="Terracotta"></div>
+      </div>
+    </div>
+
+    <!-- Size -->
+    <div class="filter-section">
+      <div class="filter-title">Size <i class="fas fa-chevron-down"></i></div>
+      <div class="size-filter">
+        <button class="size-btn">XS</button>
+        <button class="size-btn active">S</button>
+        <button class="size-btn active">M</button>
+        <button class="size-btn">L</button>
+        <button class="size-btn">XL</button>
+        <button class="size-btn">XXL</button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="filter-section">
+      <div class="filter-title">Rating <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-option"><input type="radio" name="rating" id="r5"/><label for="r5">★★★★★ & above</label></div>
+      <div class="filter-option"><input type="radio" name="rating" id="r4" checked/><label for="r4">★★★★☆ & above</label></div>
+      <div class="filter-option"><input type="radio" name="rating" id="r3"/><label for="r3">★★★☆☆ & above</label></div>
+    </div>
+
+    <button class="btn-apply">Apply Filters</button>
+    <button class="btn-clear">Clear All</button>
+  </aside>
+
+  <!-- PRODUCTS AREA -->
+  <main class="products-area">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="tag-filter active" onclick="setTag(this,'all')">All</button>
+        <button class="tag-filter" onclick="setTag(this,'new')">New Arrivals</button>
+        <button class="tag-filter" onclick="setTag(this,'sale')">On Sale</button>
+        <button class="tag-filter" onclick="setTag(this,'bestseller')">Bestsellers</button>
+      </div>
+      <div class="toolbar-right">
+        <select class="sort-select">
+          <option>Sort: Featured</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+          <option>Newest First</option>
+          <option>Top Rated</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Grid View"><i class="fas fa-th-large"></i></button>
+          <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="List View"><i class="fas fa-list"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+
+      <div class="product-card" data-tag="new">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p1"><img src="images/prod-rosewood.jpg" alt="Rosewood Pullover" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-new">New</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Woolen Classic</p>
+          <h3 class="product-name"><a href="/product-detail.html">Rosewood Pullover</a></h3>
+          <div class="rating">★★★★★ <span>(42)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,299</span><span class="product-price-old">Rs. 1,799</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#b56a7a;"></div>
+            <div class="color-dot" style="background:#7a5060;"></div>
+            <div class="color-dot" style="background:#f0d0c0;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Rosewood Pullover',1299)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="sale">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p2"><img src="images/prod-azure.jpg" alt="Azure Dream" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-sale">-22%</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cashmere Luxe</p>
+          <h3 class="product-name"><a href="/product-detail.html">Azure Dream Sweater</a></h3>
+          <div class="rating">★★★★★ <span>(38)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 2,499</span><span class="product-price-old">Rs. 3,200</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#5a6a8a;"></div>
+            <div class="color-dot" style="background:#3a4a6a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Azure Dream Sweater',2499)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="bestseller">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p3"><img src="images/prod-golden.jpg" alt="Golden Harvest" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-hot">Bestseller</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cable Knit</p>
+          <h3 class="product-name"><a href="/product-detail.html">Golden Harvest Knit</a></h3>
+          <div class="rating">★★★★☆ <span>(55)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,599</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#c0a870;"></div>
+            <div class="color-dot" style="background:#8a7040;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Golden Harvest Knit',1599)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="new">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p4"><img src="images/prod-violet.jpg" alt="Violet Mist" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-new">New</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cardigan</p>
+          <h3 class="product-name"><a href="/product-detail.html">Violet Mist Cardigan</a></h3>
+          <div class="rating">★★★★★ <span>(29)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,899</span><span class="product-price-old">Rs. 2,400</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#a078b8;"></div>
+            <div class="color-dot" style="background:#6a4a7a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Violet Mist Cardigan',1899)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="bestseller">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p5"><img src="images/prod-sage.jpg" alt="Sage Garden" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Woolen Classic</p>
+          <h3 class="product-name"><a href="/product-detail.html">Sage Garden Pullover</a></h3>
+          <div class="rating">★★★★☆ <span>(47)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,199</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#78b8a0;"></div>
+            <div class="color-dot" style="background:#4a7a6a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Sage Garden Pullover',1199)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="sale">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p6"><img src="images/prod-terracotta.jpg" alt="Terracotta Bliss" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-sale">-21%</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cashmere Luxe</p>
+          <h3 class="product-name"><a href="/product-detail.html">Terracotta Bliss Top</a></h3>
+          <div class="rating">★★★★★ <span>(33)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 2,199</span><span class="product-price-old">Rs. 2,800</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#c89080;"></div>
+            <div class="color-dot" style="background:#8a5040;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Terracotta Bliss Top',2199)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="new">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p7"><img src="images/prod-olive.jpg" alt="Olive Twist" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cable Knit</p>
+          <h3 class="product-name"><a href="/product-detail.html">Olive Twist Sweater</a></h3>
+          <div class="rating">★★★★☆ <span>(21)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,499</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#c0c078;"></div>
+            <div class="color-dot" style="background:#7a7a40;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Olive Twist Sweater',1499)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="bestseller">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p8"><img src="images/prod-ocean.jpg" alt="Ocean Breeze" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-new">New</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cardigan</p>
+          <h3 class="product-name"><a href="/product-detail.html">Ocean Breeze Cardigan</a></h3>
+          <div class="rating">★★★★★ <span>(60)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,799</span><span class="product-price-old">Rs. 2,200</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#78a0c8;"></div>
+            <div class="color-dot" style="background:#4a5a7a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Ocean Breeze Cardigan',1799)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="sale">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p9"><img src="images/prod-rosewood.jpg" alt="Product" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-sale">-30%</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Turtleneck</p>
+          <h3 class="product-name"><a href="/product-detail.html">Blush Wine Turtleneck</a></h3>
+          <div class="rating">★★★★☆ <span>(18)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,399</span><span class="product-price-old">Rs. 1,999</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#c07890;"></div>
+            <div class="color-dot" style="background:#7a4a6a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Blush Wine Turtleneck',1399)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="new">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p10"><img src="images/prod-azure.jpg" alt="Product" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cashmere Luxe</p>
+          <h3 class="product-name"><a href="/product-detail.html">Teal Whisper Sweater</a></h3>
+          <div class="rating">★★★★★ <span>(24)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 2,899</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#78c0c0;"></div>
+            <div class="color-dot" style="background:#4a7a7a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Teal Whisper Sweater',2899)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="bestseller">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p11"><img src="images/prod-golden.jpg" alt="Product" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-hot">Bestseller</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Woolen Classic</p>
+          <h3 class="product-name"><a href="/product-detail.html">Forest Fern Pullover</a></h3>
+          <div class="rating">★★★★★ <span>(71)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,349</span><span class="product-price-old">Rs. 1,699</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#a0c078;"></div>
+            <div class="color-dot" style="background:#6a7a4a;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Forest Fern Pullover',1349)">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-tag="sale">
+        <div class="product-img-wrap">
+          <div class="product-img-placeholder p12"><img src="images/prod-violet.jpg" alt="Product" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'"/></div>
+          <div class="product-actions">
+            <button class="action-btn"><i class="far fa-heart"></i></button>
+            <button class="action-btn"><i class="fas fa-eye"></i></button>
+          </div>
+          <span class="product-badge badge-sale">-18%</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Cardigan</p>
+          <h3 class="product-name"><a href="/product-detail.html">Amber Glow Cardigan</a></h3>
+          <div class="rating">★★★★☆ <span>(36)</span></div>
+          <div class="product-price-wrap"><span class="product-price">Rs. 1,649</span><span class="product-price-old">Rs. 2,010</span></div>
+          <div class="color-dots">
+            <div class="color-dot active" style="background:#c0907a;"></div>
+            <div class="color-dot" style="background:#7a5040;"></div>
+          </div>
+          <button class="btn-add-cart" onclick="addToCart('Amber Glow Cardigan',1649)">Add to Bag</button>
+        </div>
+      </div>
+
+    </div><!-- end products-grid -->
+
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </main>
+</div>
+
+<footer><p>© 2025 New Shelton Hosiery. All rights reserved.</p></footer>
+
+<div class="toast-wrap"><div class="toast-msg" id="toastMsg"></div></div>
+
+<script>
+  function setTag(btn, tag) {
+    document.querySelectorAll('.tag-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.style.display = (tag === 'all' || card.dataset.tag === tag) ? '' : 'none';
+    });
+  }
+
+  function setView(mode) {
+    const grid = document.getElementById('productsGrid');
+    if (mode === 'list') {
+      grid.classList.add('list-view');
+      document.getElementById('listViewBtn').classList.add('active');
+      document.getElementById('gridViewBtn').classList.remove('active');
+    } else {
+      grid.classList.remove('list-view');
+      document.getElementById('gridViewBtn').classList.add('active');
+      document.getElementById('listViewBtn').classList.remove('active');
+    }
+  }
+
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', function() { this.classList.toggle('active'); });
+  });
+
+  document.querySelectorAll('.color-swatch').forEach(sw => {
+    sw.addEventListener('click', function() {
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', function() {
+      this.closest('.color-dots').querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  function addToCart(name, price) {
+    showToast(`${name} added to bag ✓`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toastMsg');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

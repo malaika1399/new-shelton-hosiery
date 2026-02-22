@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout – New Shelton Hosiery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--cream:#f8f3ee;--blush:#e8c9b8;--wine:#7a2c3e;--dark:#1a1218;--gold:#c9a96e;--warm-gray:#8a7f7a;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--dark);}
+    nav{padding:18px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(248,243,238,0.95);border-bottom:1px solid rgba(122,44,62,0.12);}
+    .brand{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--wine);text-decoration:none;}
+    .brand span{font-style:italic;color:var(--gold);}
+
+    /* PROGRESS */
+    .progress-bar-wrap{background:#fff;padding:20px 80px;border-bottom:1px solid rgba(122,44,62,0.1);}
+    .progress-steps{display:flex;align-items:center;max-width:600px;}
+    .step{display:flex;align-items:center;gap:8px;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--warm-gray);}
+    .step.active{color:var(--wine);}
+    .step.done{color:var(--gold);}
+    .step-circle{width:28px;height:28px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:500;flex-shrink:0;}
+    .step-line{flex:1;height:1px;background:rgba(122,44,62,0.15);margin:0 12px;}
+
+    .checkout-layout{display:grid;grid-template-columns:1fr 380px;gap:32px;padding:40px 80px;align-items:start;}
+
+    .section-box{background:#fff;padding:28px;margin-bottom:20px;}
+    .box-title{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(122,44,62,0.1);}
+
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-group{margin-bottom:16px;}
+    .form-label{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--dark);margin-bottom:7px;display:block;}
+    .form-control{width:100%;padding:12px 14px;border:1px solid rgba(122,44,62,0.2);background:#fff;font-family:'Jost',sans-serif;font-size:0.88rem;color:var(--dark);outline:none;transition:border-color 0.25s;}
+    .form-control:focus{border-color:var(--wine);}
+    select.form-control{cursor:pointer;}
+
+    /* PAYMENT */
+    .payment-methods{display:flex;flex-direction:column;gap:12px;}
+    .pay-method{border:1px solid rgba(122,44,62,0.2);padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:border-color 0.2s;}
+    .pay-method:hover,.pay-method.selected{border-color:var(--wine);}
+    .pay-method input[type=radio]{accent-color:var(--wine);}
+    .pay-method label{cursor:pointer;font-size:0.88rem;flex:1;}
+    .pay-method .pay-icon{font-size:1.2rem;color:var(--gold);}
+    .card-fields{display:none;margin-top:14px;padding-top:14px;border-top:1px solid rgba(122,44,62,0.1);}
+    .card-fields.show{display:block;}
+
+    /* ORDER SUMMARY */
+    .order-box{background:#fff;padding:28px;position:sticky;top:20px;}
+    .order-box h2{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid rgba(122,44,62,0.1);}
+    .order-item{display:flex;gap:12px;margin-bottom:16px;align-items:center;}
+    .order-img{width:55px;height:65px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem;color:rgba(255,255,255,0.4);}
+    .oi1{background:linear-gradient(145deg,#b56a7a,#d4a0a8);}
+    .oi2{background:linear-gradient(145deg,#5a6a8a,#8aa0c0);}
+    .oi3{background:linear-gradient(145deg,#6a4a7a,#a078b8);}
+    .order-item-name{font-size:0.85rem;flex:1;color:var(--dark);}
+    .order-item-qty{font-size:0.78rem;color:var(--warm-gray);}
+    .order-item-price{font-size:0.88rem;color:var(--wine);white-space:nowrap;}
+    .summary-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:0.85rem;}
+    .summary-row.total{font-family:'Playfair Display',serif;font-size:1rem;padding-top:12px;border-top:1px solid rgba(122,44,62,0.1);}
+    .btn-place-order{width:100%;padding:16px;background:var(--wine);color:#fff;border:none;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.25s;margin-top:20px;}
+    .btn-place-order:hover{background:var(--dark);}
+
+    /* SUCCESS MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:center;justify-content:center;display:none;}
+    .modal-overlay.show{display:flex;}
+    .success-modal{background:#fff;padding:50px;text-align:center;max-width:440px;width:90%;animation:popIn 0.4s ease;}
+    @keyframes popIn{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .success-icon{width:80px;height:80px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2.2rem;color:#22c55e;}
+    .success-modal h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--dark);margin-bottom:12px;}
+    .success-modal p{color:var(--warm-gray);font-size:0.88rem;line-height:1.7;margin-bottom:24px;}
+    .order-id{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--wine);margin-bottom:24px;}
+    .btn-home{display:inline-block;padding:14px 36px;background:var(--wine);color:#fff;text-decoration:none;font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;}
+
+    footer{background:var(--dark);padding:24px 80px;text-align:center;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.78rem;}
+
+    @media(max-width:900px){.checkout-layout{grid-template-columns:1fr;padding:24px;}.order-box{position:relative;}.progress-bar-wrap{padding:16px 24px;}.form-row{grid-template-columns:1fr;}}
+    @media(max-width:680px){nav{padding:16px 20px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/index.html" class="brand">New Shelton <span>Hosiery</span></a>
+  <div style="font-size:0.78rem;color:var(--warm-gray);display:flex;align-items:center;gap:6px;">
+    <i class="fas fa-lock" style="color:var(--gold);"></i> Secure Checkout
+  </div>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <div class="progress-steps">
+    <div class="step done"><div class="step-circle"><i class="fas fa-check" style="font-size:0.6rem;"></i></div> Cart</div>
+    <div class="step-line"></div>
+    <div class="step active"><div class="step-circle">2</div> Details</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-circle">3</div> Payment</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-circle">4</div> Done</div>
+  </div>
+</div>
+
+<div class="checkout-layout">
+  <div>
+    <!-- CONTACT -->
+    <div class="section-box">
+      <h3 class="box-title"><i class="fas fa-user" style="color:var(--gold);margin-right:8px;"></i> Contact Information</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name *</label>
+          <input type="text" class="form-control" placeholder="Priya" id="fname"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name *</label>
+          <input type="text" class="form-control" placeholder="Sharma" id="lname"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" class="form-control" placeholder="you@email.com" id="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number *</label>
+        <input type="tel" class="form-control" placeholder="+92 300 1234567" id="phone"/>
+      </div>
+    </div>
+
+    <!-- SHIPPING -->
+    <div class="section-box">
+      <h3 class="box-title"><i class="fas fa-truck" style="color:var(--gold);margin-right:8px;"></i> Shipping Address</h3>
+      <div class="form-group">
+        <label class="form-label">Address Line 1 *</label>
+        <input type="text" class="form-control" placeholder="House/Flat No., Street Name" id="addr1"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Address Line 2</label>
+        <input type="text" class="form-control" placeholder="Area, Landmark (optional)" id="addr2"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">City *</label>
+          <input type="text" class="form-control" placeholder="Gujranwala" id="city"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">State *</label>
+          <select class="form-control" id="state">
+            <option>Select State</option>
+            <option>Delhi</option>
+            <option>Maharashtra</option>
+            <option>Punjab</option>
+            <option>Gujarat</option>
+            <option>Rajasthan</option>
+            <option>Karnataka</option>
+            <option>Tamil Nadu</option>
+            <option>Uttar Pradesh</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">PIN Code *</label>
+          <input type="text" class="form-control" placeholder="400001" id="pin" maxlength="6"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country</label>
+          <input type="text" class="form-control" value="Pakistan" readonly style="background:#f8f3ee;"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="section-box">
+      <h3 class="box-title"><i class="fas fa-credit-card" style="color:var(--gold);margin-right:8px;"></i> Payment Method</h3>
+      <div class="payment-methods">
+        <div class="pay-method selected" onclick="selectPay(this,'card')">
+          <input type="radio" name="pay" checked/><label>Credit / Debit Card</label>
+          <span class="pay-icon"><i class="far fa-credit-card"></i></span>
+        </div>
+        <div class="card-fields show" id="cardFields">
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Expiry Date</label>
+              <input type="text" class="form-control" placeholder="MM / YY" maxlength="7"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">CVV</label>
+              <input type="password" class="form-control" placeholder="•••" maxlength="3"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Name on Card</label>
+            <input type="text" class="form-control" placeholder="As printed on card"/>
+          </div>
+        </div>
+
+        <div class="pay-method" onclick="selectPay(this,'upi')">
+          <input type="radio" name="pay"/><label>UPI / GPay / PhonePe</label>
+          <span class="pay-icon"><i class="fas fa-mobile-alt"></i></span>
+        </div>
+        <div class="pay-method" onclick="selectPay(this,'netbanking')">
+          <input type="radio" name="pay"/><label>Net Banking</label>
+          <span class="pay-icon"><i class="fas fa-university"></i></span>
+        </div>
+        <div class="pay-method" onclick="selectPay(this,'cod')">
+          <input type="radio" name="pay"/><label>Cash on Delivery</label>
+          <span class="pay-icon"><i class="fas fa-money-bill-wave"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-box">
+    <h2>Your Order</h2>
+    <div class="order-item">
+      <div class="order-img oi1"><i class="fas fa-tshirt"></i></div>
+      <div class="order-item-name">Rosewood Pullover<br><span class="order-item-qty">Size M · Rose Blush · Qty 1</span></div>
+      <div class="order-item-price">Rs. 1,299</div>
+    </div>
+    <div class="order-item">
+      <div class="order-img oi2"><i class="fas fa-tshirt"></i></div>
+      <div class="order-item-name">Azure Dream Sweater<br><span class="order-item-qty">Size S · Navy · Qty 2</span></div>
+      <div class="order-item-price">Rs. 4,998</div>
+    </div>
+    <div class="order-item">
+      <div class="order-img oi3"><i class="fas fa-tshirt"></i></div>
+      <div class="order-item-name">Violet Mist Cardigan<br><span class="order-item-qty">Size L · Lavender · Qty 1</span></div>
+      <div class="order-item-price">Rs. 1,899</div>
+    </div>
+    <hr style="border-color:rgba(122,44,62,0.1);margin:16px 0;"/>
+    <div class="summary-row"><span>Subtotal</span><span>Rs. 8,196</span></div>
+    <div class="summary-row"><span>Shipping</span><span style="color:#22c55e;">FREE</span></div>
+    <div class="summary-row"><span>Discount</span><span style="color:#22c55e;">−Rs. 500</span></div>
+    <div class="summary-row"><span>GST (5%)</span><span>Rs. 385</span></div>
+    <div class="summary-row total"><span><strong>Total</strong></span><span style="color:var(--wine);font-size:1.2rem;"><strong>Rs. 8,081</strong></span></div>
+    <button class="btn-place-order" onclick="placeOrder()"><i class="fas fa-lock" style="margin-right:8px;"></i>Place Order</button>
+    <p style="text-align:center;font-size:0.7rem;color:var(--warm-gray);margin-top:12px;"><i class="fas fa-shield-alt" style="color:var(--gold);"></i> SSL Secured · Your data is safe</p>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="success-modal">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for shopping with New Shelton Hosiery. Your order has been confirmed and will be dispatched within 24 hours.</p>
+    <div class="order-id">#NSH-2025-8142</div>
+    <p style="font-size:0.8rem;color:var(--warm-gray);">A confirmation email has been sent to your inbox.</p>
+    <br/>
+    <a href="/index.html" class="btn-home">Back to Home</a>
+  </div>
+</div>
+
+<footer><p>© 2025 New Shelton Hosiery. All rights reserved.</p></footer>
+
+<script>
+  function selectPay(el, type) {
+    document.querySelectorAll('.pay-method').forEach(m => { m.classList.remove('selected'); m.querySelector('input').checked = false; });
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+    document.getElementById('cardFields').className = 'card-fields' + (type === 'card' ? ' show' : '');
+  }
+  function formatCard(el) {
+    let val = el.value.replace(/\D/g,'').substring(0,16);
+    el.value = val.replace(/(.{4})/g,'$1 ').trim();
+  }
+  function placeOrder() {
+    // Check login first
+    const loggedIn = localStorage.getItem('nsh_user');
+    if (!loggedIn) {
+      window.location.href = 'cart.html?needlogin=1';
+      return;
+    }
+    const fname = document.getElementById('fname').value;
+    const email = document.getElementById('email').value;
+    const addr1 = document.getElementById('addr1').value;
+    if (!fname || !email || !addr1) {
+      alert('Please fill in all required fields before placing your order.');
+      return;
+    }
+    document.getElementById('successModal').classList.add('show');
+  }
+
+  // ── On page load: check login, show welcome bar ──
+  window.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('nsh_user') || 'null');
+    if (user) {
+      // Pre-fill name and email if available
+      const fnameEl = document.getElementById('fname');
+      const emailEl = document.getElementById('email');
+      if (fnameEl && !fnameEl.value) fnameEl.value = user.name || '';
+      if (emailEl && !emailEl.value) emailEl.value = user.email || '';
+
+      // Show welcome strip
+      const strip = document.createElement('div');
+      strip.style.cssText = 'background:#0d0b0e;color:#fff;text-align:center;padding:10px;font-size:.78rem;letter-spacing:.1em;';
+      strip.innerHTML = '<i class="fas fa-user-check" style="color:#b8966a;margin-right:8px;"></i>Logged in as <strong style="color:#b8966a;">' + user.name + '</strong> &nbsp;|&nbsp; <a href="#" onclick="logout()" style="color:#c4736a;text-decoration:underline;">Sign Out</a>';
+      document.body.insertBefore(strip, document.body.firstChild);
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem('nsh_user');
+    window.location.href = '/login.html';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – New Shelton Hosiery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --cream: #f8f3ee;
+      --blush: #e8c9b8;
+      --wine: #7a2c3e;
+      --dark: #1a1218;
+      --gold: #c9a96e;
+      --warm-gray: #8a7f7a;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Jost',sans-serif; background:var(--cream); min-height:100vh; display:flex; flex-direction:column; }
+
+    /* NAVBAR */
+    nav {
+      padding:18px 48px; display:flex; align-items:center; justify-content:space-between;
+      background:rgba(248,243,238,0.95); border-bottom:1px solid rgba(122,44,62,0.12);
+    }
+    .brand { font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--wine); text-decoration:none; }
+    .brand span { font-style:italic; color:var(--gold); }
+
+    /* MAIN */
+    .auth-wrapper {
+      flex:1; display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 75px);
+    }
+    .auth-visual {
+      background: linear-gradient(145deg, #7a2c3e 0%, #4a1828 60%, #1a1218 100%);
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      padding:60px; position:relative; overflow:hidden;
+    }
+    .auth-visual::before {
+      content:''; position:absolute; width:400px; height:400px;
+      border:1px solid rgba(201,169,110,0.2); border-radius:50%;
+      top:50%; left:50%; transform:translate(-50%,-50%);
+    }
+    .auth-visual::after {
+      content:''; position:absolute; width:600px; height:600px;
+      border:1px solid rgba(201,169,110,0.1); border-radius:50%;
+      top:50%; left:50%; transform:translate(-50%,-50%);
+    }
+    .auth-visual-content { position:relative; z-index:1; text-align:center; }
+    .auth-visual-icon { font-size:5rem; color:rgba(201,169,110,0.4); margin-bottom:30px; }
+    .auth-visual h2 { font-family:'Playfair Display',serif; font-size:2.2rem; color:#fff; margin-bottom:16px; }
+    .auth-visual h2 em { color:var(--blush); font-style:italic; }
+    .auth-visual p { color:rgba(255,255,255,0.55); font-size:0.9rem; line-height:1.8; font-weight:300; max-width:320px; }
+    .auth-features { margin-top:40px; text-align:left; }
+    .auth-feature { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .auth-feature i { color:var(--gold); width:18px; }
+    .auth-feature span { color:rgba(255,255,255,0.65); font-size:0.85rem; }
+
+    .auth-form-col {
+      display:flex; align-items:center; justify-content:center; padding:60px 80px;
+    }
+    .auth-form-box { width:100%; max-width:420px; }
+    .auth-form-box .eyebrow {
+      font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:12px; display:block;
+    }
+    .auth-form-box h1 {
+      font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--dark);
+      margin-bottom:8px;
+    }
+    .auth-form-box .subtitle { color:var(--warm-gray); font-size:0.88rem; font-weight:300; margin-bottom:36px; }
+
+    .form-group { margin-bottom:22px; }
+    .form-label { font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--dark); margin-bottom:8px; display:block; }
+    .form-control-custom {
+      width:100%; padding:14px 16px;
+      border:1px solid rgba(122,44,62,0.2); background:#fff;
+      font-family:'Jost',sans-serif; font-size:0.9rem; color:var(--dark);
+      outline:none; transition:border-color 0.25s;
+    }
+    .form-control-custom:focus { border-color:var(--wine); }
+    .input-wrap { position:relative; }
+    .input-icon { position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--warm-gray); cursor:pointer; font-size:0.85rem; }
+
+    .forgot-link { font-size:0.8rem; color:var(--warm-gray); text-decoration:none; float:right; margin-top:6px; }
+    .forgot-link:hover { color:var(--wine); }
+
+    .btn-auth {
+      width:100%; padding:15px; background:var(--wine); color:#fff; border:none;
+      font-size:0.78rem; letter-spacing:0.15em; text-transform:uppercase;
+      cursor:pointer; transition:background 0.25s; margin-top:8px;
+    }
+    .btn-auth:hover { background:var(--dark); }
+
+    .divider { text-align:center; margin:24px 0; position:relative; }
+    .divider::before { content:''; position:absolute; top:50%; left:0; right:0; height:1px; background:rgba(122,44,62,0.15); }
+    .divider span { background:var(--cream); padding:0 14px; font-size:0.75rem; color:var(--warm-gray); position:relative; }
+
+    .social-login { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .btn-social {
+      padding:12px; border:1px solid rgba(122,44,62,0.2); background:#fff;
+      font-size:0.78rem; color:var(--dark); cursor:pointer; transition:all 0.25s;
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      text-decoration:none;
+    }
+    .btn-social:hover { border-color:var(--wine); color:var(--wine); }
+
+    .auth-switch { text-align:center; margin-top:28px; font-size:0.85rem; color:var(--warm-gray); }
+    .auth-switch a { color:var(--wine); text-decoration:none; font-weight:500; }
+
+    .error-msg { background:#fdf0f2; border-left:3px solid var(--wine); padding:12px 16px; font-size:0.82rem; color:var(--wine); margin-bottom:20px; display:none; }
+    .success-msg { background:#f0fdf4; border-left:3px solid #22c55e; padding:12px 16px; font-size:0.82rem; color:#16a34a; margin-bottom:20px; display:none; }
+
+    footer { background:var(--dark); padding:20px 48px; text-align:center; }
+    footer p { color:rgba(255,255,255,0.4); font-size:0.78rem; }
+
+    @media(max-width:900px) {
+      .auth-wrapper { grid-template-columns:1fr; }
+      .auth-visual { display:none; }
+      .auth-form-col { padding:40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/index.html" class="brand">New Shelton <span>Hosiery</span></a>
+  <a href="/index.html" style="font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-gray);text-decoration:none;">
+    <i class="fas fa-arrow-left" style="margin-right:6px;"></i> Back to Store
+  </a>
+</nav>
+
+<div class="auth-wrapper">
+  <!-- Visual Panel -->
+  <div class="auth-visual">
+    <div class="auth-visual-content">
+      <div class="auth-visual-icon"><i class="fas fa-tshirt"></i></div>
+      <h2>Welcome <em>Back</em></h2>
+      <p>Sign in to access your account, track orders, and discover our latest winter collections.</p>
+      <div class="auth-features">
+        <div class="auth-feature"><i class="fas fa-check"></i><span>Track your orders in real time</span></div>
+        <div class="auth-feature"><i class="fas fa-check"></i><span>Save items to your wishlist</span></div>
+        <div class="auth-feature"><i class="fas fa-check"></i><span>Exclusive member discounts</span></div>
+        <div class="auth-feature"><i class="fas fa-check"></i><span>Easy returns & exchanges</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Panel -->
+  <div class="auth-form-col">
+    <div class="auth-form-box">
+      <span class="eyebrow"><i class="fas fa-star"></i> &nbsp; Member Area</span>
+      <!-- Tab Buttons -->
+      <div style="display:flex;border-bottom:2px solid #f0e8e0;margin-bottom:24px;">
+        <button id="tabLoginBtn" onclick="showTab('login')" style="flex:1;padding:13px;border:none;background:none;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-bottom:3px solid #7a2c3e;color:#7a2c3e;margin-bottom:-2px;font-family:inherit;font-weight:500;">Sign In</button>
+        <button id="tabRegBtn" onclick="showTab('register')" style="flex:1;padding:13px;border:none;background:none;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;color:#8a7f7a;margin-bottom:-2px;font-family:inherit;">Create Account</button>
+      </div>
+
+      <!-- LOGIN SECTION -->
+      <div id="loginSection">
+        <div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle"></i> &nbsp; Invalid email or password. Please try again.</div>
+        <div class="success-msg" id="successMsg"><i class="fas fa-check-circle"></i> &nbsp; Login successful! Redirecting...</div>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrap">
+            <input type="email" class="form-control-custom" id="loginEmail" placeholder="you@example.com" required/>
+            <i class="fas fa-envelope input-icon"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" class="form-control-custom" id="loginPassword" placeholder="Enter your password" required/>
+            <i class="fas fa-eye input-icon" id="togglePwd" onclick="togglePassword()"></i>
+          </div>
+          <a href="#" class="forgot-link">Forgot password?</a>
+          <div style="clear:both;"></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <input type="checkbox" id="rememberMe" style="accent-color:var(--wine);width:15px;height:15px;"/>
+          <label for="rememberMe" style="font-size:0.82rem;color:var(--warm-gray);cursor:pointer;">Remember me for 30 days</label>
+        </div>
+
+        <button type="submit" class="btn-auth">Sign In &nbsp; <i class="fas fa-arrow-right"></i></button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <div id="registerSection" style="display:none;">
+        <div class="error-msg" id="regErrorMsg"></div>
+        <div class="success-msg" id="regSuccessMsg"></div>
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="regFname" placeholder="Ayesha" required style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="regLname" placeholder="Khan" style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:14px;">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="you@example.com" required style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+          </div>
+          <div class="form-group" style="margin-top:14px;">
+            <label>Phone (optional)</label>
+            <input type="tel" id="regPhone" placeholder="03001234567" style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+          </div>
+          <div class="form-group" style="margin-top:14px;">
+            <label>Password</label>
+            <input type="password" id="regPass" placeholder="Min. 8 characters" required style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+          </div>
+          <div class="form-group" style="margin-top:14px;margin-bottom:22px;">
+            <label>Confirm Password</label>
+            <input type="password" id="regConfirm" placeholder="Repeat password" required style="width:100%;padding:13px 16px;border:1px solid rgba(122,44,62,.2);background:transparent;font-family:inherit;font-size:.88rem;outline:none;">
+          </div>
+          <button type="submit" style="width:100%;padding:16px;background:#7a2c3e;color:#fff;border:none;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:background .3s;">
+            Create Account &nbsp;→
+          </button>
+        </form>
+        <div class="auth-switch" style="margin-top:20px;">
+          Already have an account? <a href="#" onclick="showTab('login');return false;">Sign In</a>
+        </div>
+      </div>
+
+      <div class="divider" id="socialDivider"><span>or continue with</span></div>
+      <div class="social-login">
+        <a href="#" class="btn-social"><i class="fab fa-google" style="color:#ea4335;"></i> Google</a>
+        <a href="#" class="btn-social"><i class="fab fa-facebook-f" style="color:#1877f2;"></i> Facebook</a>
+      </div>
+
+      <div class="auth-switch">
+        New to New Shelton Hosiery? <a href="#" onclick="switchToRegister();return false;">Create Account</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer><p>© 2025 New Shelton Hosiery. All rights reserved.</p></footer>
+
+<script>
+  // ── TAB SWITCHER ──
+  function showTab(tab) {
+    const isLogin = tab === 'login';
+    // Show/hide sections
+    document.getElementById('loginSection').style.display   = isLogin ? 'block' : 'none';
+    document.getElementById('loginForm').style.display      = isLogin ? 'block' : 'none';
+    document.getElementById('registerSection').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('socialDivider').style.display  = isLogin ? 'block' : 'none';
+
+    // Update tab styles
+    const tl = document.getElementById('tabLoginBtn');
+    const tr = document.getElementById('tabRegBtn');
+    if (isLogin) {
+      tl.style.borderBottom = '3px solid #7a2c3e'; tl.style.color = '#7a2c3e';
+      tr.style.borderBottom = '3px solid transparent'; tr.style.color = '#8a7f7a';
+    } else {
+      tr.style.borderBottom = '3px solid #7a2c3e'; tr.style.color = '#7a2c3e';
+      tl.style.borderBottom = '3px solid transparent'; tl.style.color = '#8a7f7a';
+    }
+  }
+
+  // ── HANDLE REGISTER ──
+  async function handleRegister(e) {
+    e.preventDefault();
+    const fname   = document.getElementById('regFname').value.trim();
+    const lname   = document.getElementById('regLname').value.trim();
+    const email   = document.getElementById('regEmail').value.trim();
+    const phone   = document.getElementById('regPhone').value.trim();
+    const pass    = document.getElementById('regPass').value;
+    const confirm = document.getElementById('regConfirm').value;
+    const errEl   = document.getElementById('regErrorMsg');
+    const sucEl   = document.getElementById('regSuccessMsg');
+    errEl.style.display = 'none';
+    sucEl.style.display = 'none';
+
+    if (!fname || !email || !pass) {
+      errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill all required fields.';
+      errEl.style.display = 'block'; return;
+    }
+    if (pass.length < 8) {
+      errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password must be at least 8 characters.';
+      errEl.style.display = 'block'; return;
+    }
+    if (pass !== confirm) {
+      errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Passwords do not match.';
+      errEl.style.display = 'block'; return;
+    }
+
+    try {
+      const res  = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ first_name:fname, last_name:lname, email, phone, password:pass, confirm_password:confirm })
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('nsh_user', JSON.stringify({ name: fname, email }));
+        sucEl.innerHTML = '<i class="fas fa-check-circle"></i> Account created! Welcome, ' + fname + '! Redirecting...';
+        sucEl.style.display = 'block';
+        setTimeout(() => window.location.href = getRedirectUrl(), 1500);
+      } else {
+        errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+        errEl.style.display = 'block';
+      }
+    } catch {
+      // Fallback demo mode
+      const users = JSON.parse(localStorage.getItem('nsh_users') || '[]');
+      if (users.find(u => u.email === email)) {
+        errEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Email already registered. Please sign in.';
+        errEl.style.display = 'block'; return;
+      }
+      users.push({ first_name:fname, last_name:lname, email, phone, password:pass });
+      localStorage.setItem('nsh_users', JSON.stringify(users));
+      localStorage.setItem('nsh_user', JSON.stringify({ name: fname, email }));
+      sucEl.innerHTML = '<i class="fas fa-check-circle"></i> Account created! Welcome, ' + fname + '!';
+      sucEl.style.display = 'block';
+      setTimeout(() => window.location.href = getRedirectUrl(), 1500);
+    }
+  }
+
+  // switchToRegister calls showTab
+  function switchToRegister() {
+    showTab('register');
+    window.scrollTo(0, 0);
+  }
+
+  function togglePassword() {
+    const pwd = document.getElementById('loginPassword');
+    const icon = document.getElementById('togglePwd');
+    if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+    else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+  }
+
+  // Where to go after login - back to checkout if came from there
+  function getRedirectUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('redirect') === 'checkout' ? 'checkout.html' : 'index.html';
+  }
+
+  // Show banner if redirected from cart
+  window.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('redirect') === 'checkout') {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:#c4736a;color:#fff;text-align:center;padding:13px 20px;font-size:.82rem;letter-spacing:.08em;';
+      banner.innerHTML = '<i class="fas fa-lock" style="margin-right:8px;"></i>Please sign in to continue to <strong>Checkout</strong>';
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
+
+    // If already logged in, redirect immediately
+    const user = localStorage.getItem('nsh_user');
+    if (user) window.location.href = getRedirectUrl();
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pwd   = document.getElementById('loginPassword').value;
+
+    if (!email || pwd.length < 4) {
+      document.getElementById('errorMsg').style.display = 'block';
+      document.getElementById('successMsg').style.display = 'none';
+      return;
+    }
+
+    // Try real API
+    try {
+      const res  = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password:pwd}) });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('nsh_user', JSON.stringify(data.user));
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+        setTimeout(() => window.location.href = getRedirectUrl(), 1200);
+        return;
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('successMsg').style.display = 'none';
+        return;
+      }
+    } catch {
+      // Fallback demo mode – check localStorage
+      const users = JSON.parse(localStorage.getItem('nsh_users') || '[]');
+      const user  = users.find(u => u.email === email && u.password === pwd);
+      if (email && pwd.length >= 4) {
+        // Demo: accept any valid looking credentials
+        const demoUser = user || { name: email.split('@')[0], email };
+        localStorage.setItem('nsh_user', JSON.stringify({name: demoUser.name || demoUser.first_name, email}));
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'none';
+        setTimeout(() => window.location.href = getRedirectUrl(), 1200);
+      } else {
+        document.getElementById('errorMsg').style.display = 'block';
+        document.getElementById('successMsg').style.display = 'none';
+      }
+    }
+  });
+</script>
+</body>
+</html>

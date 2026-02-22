@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Bag – New Shelton Hosiery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--ink:#0d0b0e;--sand:#f5f0e8;--rose:#c4736a;--gold:#b8966a;--mist:#e8e0d4;--ash:#7a7470;--cream:#faf7f2}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink)}
+    a{text-decoration:none;color:inherit}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,242,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--mist)}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--ink)}
+    .nav-brand em{color:var(--gold);font-style:italic}
+    .nav-menu{display:flex;gap:36px;list-style:none}
+    .nav-menu a{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);transition:color .3s}
+    .nav-menu a:hover{color:var(--rose)}
+    .nav-right{display:flex;gap:20px}
+    .nav-right a{color:var(--ink);font-size:1rem;transition:color .3s}
+    .nav-right a:hover{color:var(--rose)}
+
+    /* PAGE HEADER */
+    .pg-header{background:var(--ink);padding:50px 60px}
+    .pg-header h1{font-family:'Cormorant Garamond',serif;font-size:3rem;color:#fff;font-weight:300}
+    .pg-header h1 em{color:var(--gold);font-style:italic}
+    .pg-header p{color:rgba(255,255,255,.45);font-size:.85rem;margin-top:8px}
+
+    /* LAYOUT */
+    .cart-layout{display:grid;grid-template-columns:1fr 380px;gap:24px;padding:40px 60px;align-items:start}
+
+    /* CART ITEMS BOX */
+    .items-box{background:#fff}
+    .items-head{padding:24px 28px;border-bottom:1px solid var(--mist);display:flex;justify-content:space-between;align-items:center}
+    .items-head h2{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400}
+    .items-head a{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);display:flex;align-items:center;gap:6px;transition:color .3s}
+    .items-head a:hover{color:var(--rose)}
+
+    /* CART ITEM ROW */
+    .cart-item{display:grid;grid-template-columns:90px 1fr auto;gap:20px;align-items:center;padding:20px 28px;border-bottom:1px solid var(--mist);transition:opacity .3s}
+    .c-img{width:90px;height:112px;object-fit:cover;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--gold)}
+    .c-info{}
+    .c-brand{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+    .c-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;margin-bottom:8px}
+    .c-qty-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .qty-ctrl{display:flex;border:1px solid var(--mist)}
+    .qb{width:34px;height:34px;border:none;background:transparent;cursor:pointer;font-size:1rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
+    .qb:hover{background:var(--rose);color:#fff}
+    .qn{width:40px;height:34px;text-align:center;border:none;font-family:'DM Sans',sans-serif;font-size:.9rem;background:transparent;outline:none}
+    .c-remove{font-size:.7rem;color:var(--ash);cursor:pointer;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;background:none;border:none;font-family:'DM Sans',sans-serif}
+    .c-remove:hover{color:var(--rose)}
+    .c-price{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--rose);white-space:nowrap;text-align:right}
+    .c-unit{font-size:.72rem;color:var(--ash);display:block;margin-top:3px;text-align:right}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:80px 40px}
+    .empty-state i{font-size:4rem;color:var(--mist);margin-bottom:20px;display:block}
+    .empty-state h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:10px;font-weight:400}
+    .empty-state p{color:var(--ash);font-size:.88rem;margin-bottom:28px;font-weight:300}
+
+    /* ORDER SUMMARY */
+    .order-box{background:#fff;position:sticky;top:90px}
+    .order-box-head{padding:22px 28px;border-bottom:1px solid var(--mist)}
+    .order-box-head h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400}
+    .order-box-body{padding:24px 28px}
+    .coupon-row{display:flex;margin-bottom:22px}
+    .coupon-input{flex:1;padding:12px 14px;border:1px solid var(--mist);border-right:0;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none}
+    .coupon-input:focus{border-color:var(--gold)}
+    .coupon-btn{padding:12px 16px;background:var(--ink);color:#fff;border:none;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .coupon-btn:hover{background:var(--rose)}
+    .sum-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:.88rem;color:var(--ash)}
+    .sum-row.total{font-family:'Cormorant Garamond',serif;font-size:1.1rem;padding-top:14px;border-top:1px solid var(--mist);margin-top:6px;color:var(--ink)}
+    .sum-row.total span:last-child{color:var(--rose);font-size:1.3rem}
+    .free{color:#22c55e!important;font-weight:500}
+    .discount{color:#22c55e!important}
+    .chk-btn{width:100%;padding:16px;background:var(--rose);color:#fff;border:none;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .3s;margin-top:18px;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px}
+    .chk-btn:hover{background:var(--ink)}
+    .secure{text-align:center;margin-top:12px;font-size:.72rem;color:var(--ash)}
+    .secure i{color:var(--gold);margin-right:4px}
+    .pay-icons{display:flex;justify-content:center;gap:8px;margin-top:12px}
+    .pay-ic{background:var(--sand);padding:5px 12px;font-size:.68rem;color:var(--ash)}
+
+    /* BTN */
+    .btn-fill{display:inline-flex;align-items:center;gap:8px;background:var(--rose);color:#fff;padding:14px 30px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .3s}
+    .btn-fill:hover{background:var(--ink)}
+
+    /* TOAST */
+    .toast-wrap{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:999}
+    .toast{background:var(--ink);color:#fff;padding:13px 24px;font-size:.8rem;letter-spacing:.08em;border-left:3px solid var(--gold);transform:translateY(60px);opacity:0;transition:all .4s;white-space:nowrap}
+    .toast.on{transform:translateY(0);opacity:1}
+
+    /* FOOTER */
+    footer{background:var(--ink);padding:28px 60px;text-align:center;margin-top:60px}
+    footer p{color:rgba(255,255,255,.3);font-size:.78rem}
+
+    @media(max-width:900px){
+      .cart-layout{grid-template-columns:1fr;padding:24px}
+      .order-box{position:relative;top:0}
+      .pg-header{padding:40px 24px}
+      nav{padding:16px 24px}
+      .nav-menu{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/index.html" class="nav-brand">New Shelton <em>Hosiery</em></a>
+  <ul class="nav-menu">
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/shop.html">Shop</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="/shop.html"><i class="fas fa-search"></i></a>
+    <a href="#"><i class="far fa-heart"></i></a>
+    <a href="/cart.html"><i class="fas fa-shopping-bag"></i></a>
+    <a href="/login.html"><i class="fas fa-user"></i></a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="pg-header">
+  <h1>Your <em>Bag</em></h1>
+  <p id="bagSubtitle">Loading your items...</p>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="cart-layout">
+
+  <!-- ITEMS -->
+  <div class="items-box">
+    <div class="items-head">
+      <h2 id="itemsHeading">Shopping Bag</h2>
+      <a href="/shop.html"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+    </div>
+    <div id="cartItemsContainer">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-box" id="orderBox">
+    <div class="order-box-head"><h2>Order Summary</h2></div>
+    <div class="order-box-body">
+      <div class="coupon-row">
+        <input type="text" class="coupon-input" id="couponInput" placeholder="Enter coupon code"/>
+        <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+      </div>
+      <div class="sum-row"><span>Subtotal</span><span id="sumSubtotal">Rs. 0</span></div>
+      <div class="sum-row"><span>Shipping</span><span id="sumShipping" class="free">FREE</span></div>
+      <div class="sum-row"><span>Discount</span><span id="sumDiscount" class="discount">Rs. 0</span></div>
+      <div class="sum-row total"><span>Total</span><span id="sumTotal">Rs. 0</span></div>
+      <button class="chk-btn" onclick="goToCheckout()">
+        <i class="fas fa-lock"></i> Proceed to Checkout
+      </button>
+      <p class="secure"><i class="fas fa-shield-alt"></i> 100% Secure Checkout</p>
+      <div class="pay-icons">
+        <span class="pay-ic">JazzCash</span>
+        <span class="pay-ic">Easypaisa</span>
+        <span class="pay-ic">VISA</span>
+        <span class="pay-ic">COD</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer><p>© 2025 New Shelton Hosiery. All rights reserved.</p></footer>
+
+<!-- LOGIN REQUIRED MODAL -->
+<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(13,11,14,.65);z-index:400;backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+  <div style="background:#faf7f2;max-width:460px;width:92%;margin:auto;position:relative;">
+    <button onclick="closeLoginModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;color:#7a7470;cursor:pointer;z-index:2;"><i class="fas fa-times"></i></button>
+    <div style="background:#0d0b0e;padding:36px 40px 28px;">
+      <p style="font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:#b8966a;margin-bottom:10px;">Members Only</p>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;color:#fff;font-weight:300;line-height:1.2;">Sign in to <em style="color:#b8966a;">Continue</em></h2>
+      <p style="color:rgba(255,255,255,.45);font-size:.82rem;margin-top:10px;font-weight:300;line-height:1.7;">Please log in or create a free account to proceed to checkout and track your orders.</p>
+    </div>
+    <div style="padding:32px 40px 36px;">
+      <div style="display:flex;border-bottom:1px solid #e8e0d4;margin-bottom:24px;">
+        <button id="mTabLogin" onclick="switchTab('login')" style="flex:1;padding:12px;border:none;background:none;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid #c4736a;color:#c4736a;margin-bottom:-1px;font-family:'DM Sans',sans-serif;">Sign In</button>
+        <button id="mTabReg"   onclick="switchTab('register')" style="flex:1;padding:12px;border:none;background:none;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;color:#7a7470;margin-bottom:-1px;font-family:'DM Sans',sans-serif;">Create Account</button>
+      </div>
+      <!-- Login -->
+      <div id="mLoginForm">
+        <div style="margin-bottom:14px;"><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">Email</label><input type="email" id="mEmail" placeholder="your@email.com" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+        <div style="margin-bottom:18px;"><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">Password</label><input type="password" id="mPass" placeholder="••••••••" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+        <div id="mLoginErr" style="display:none;background:#fff0ee;border-left:3px solid #c4736a;padding:10px 14px;font-size:.8rem;color:#c4736a;margin-bottom:14px;"></div>
+        <button onclick="modalLogin()" style="width:100%;padding:15px;background:#c4736a;color:#fff;border:none;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;">Sign In &amp; Continue <i class="fas fa-arrow-right" style="margin-left:8px;"></i></button>
+        <p style="text-align:center;margin-top:14px;font-size:.8rem;color:#7a7470;">No account? <a href="#" onclick="switchTab('register');return false;" style="color:#c4736a;">Create one free</a></p>
+      </div>
+      <!-- Register -->
+      <div id="mRegForm" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">First Name</label><input type="text" id="mFname" placeholder="Ayesha" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+          <div><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">Last Name</label><input type="text" id="mLname" placeholder="Khan" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+        </div>
+        <div style="margin-bottom:14px;"><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">Email</label><input type="email" id="mRegEmail" placeholder="your@email.com" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+        <div style="margin-bottom:18px;"><label style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#7a7470;display:block;margin-bottom:6px;">Password</label><input type="password" id="mRegPass" placeholder="Min. 8 characters" style="width:100%;padding:13px 16px;border:1px solid #e8e0d4;background:transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;"></div>
+        <div id="mRegErr" style="display:none;background:#fff0ee;border-left:3px solid #c4736a;padding:10px 14px;font-size:.8rem;color:#c4736a;margin-bottom:14px;"></div>
+        <button onclick="modalRegister()" style="width:100%;padding:15px;background:#c4736a;color:#fff;border:none;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;">Create Account &amp; Continue <i class="fas fa-arrow-right" style="margin-left:8px;"></i></button>
+        <p style="text-align:center;margin-top:14px;font-size:.8rem;color:#7a7470;">Have an account? <a href="#" onclick="switchTab('login');return false;" style="color:#c4736a;">Sign in</a></p>
+      </div>
+      <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #e8e0d4;">
+        <a href="/checkout.html" style="font-size:.75rem;color:#7a7470;text-decoration:underline;letter-spacing:.06em;">Continue as Guest &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+  // ── CART STATE ──
+  let cart    = JSON.parse(localStorage.getItem('nsh_cart') || '[]');
+  let discount = 0;
+
+  // ── RENDER CART ──
+  function renderCart() {
+    const container = document.getElementById('cartItemsContainer');
+    const count     = cart.reduce((s, i) => s + i.qty, 0);
+    const subtotal  = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+    // Update header
+    document.getElementById('bagSubtitle').textContent =
+      count > 0 ? count + ' item' + (count > 1 ? 's' : '') + ' in your bag' : 'Your bag is empty';
+    document.getElementById('itemsHeading').textContent =
+      'Shopping Bag (' + count + ')';
+
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="far fa-heart"></i>
+          <h3>Your bag is empty</h3>
+          <p>Looks like you haven't added anything yet.</p>
+          <a href="/shop.html" class="btn-fill">Start Shopping <i class="fas fa-arrow-right"></i></a>
+        </div>`;
+      document.getElementById('orderBox').style.display = 'none';
+    } else {
+      document.getElementById('orderBox').style.display = 'block';
+      container.innerHTML = cart.map((item, i) => `
+        <div class="cart-item" id="ci${i}">
+          <div class="c-img"><i class="fas fa-tshirt"></i></div>
+          <div class="c-info">
+            <p class="c-brand">New Shelton Hosiery</p>
+            <h3 class="c-name">${item.name}</h3>
+            <div class="c-qty-row">
+              <div class="qty-ctrl">
+                <button class="qb" onclick="changeQty(${i},-1)">−</button>
+                <input class="qn" type="number" value="${item.qty}" min="1" onchange="setQty(${i},this.value)"/>
+                <button class="qb" onclick="changeQty(${i},1)">+</button>
+              </div>
+              <button class="c-remove" onclick="removeItem(${i})">Remove</button>
+            </div>
+          </div>
+          <div>
+            <p class="c-price">Rs. ${(item.price * item.qty).toLocaleString('en-PK')}</p>
+            <span class="c-unit">Rs. ${item.price.toLocaleString('en-PK')} each</span>
+          </div>
+        </div>`).join('');
+    }
+    updateSummary();
+  }
+
+  // ── UPDATE SUMMARY BOX ──
+  function updateSummary() {
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const shipping = subtotal >= 2999 ? 0 : 200;
+    const total    = subtotal - discount + shipping;
+
+    document.getElementById('sumSubtotal').textContent  = 'Rs. ' + subtotal.toLocaleString('en-PK');
+    document.getElementById('sumShipping').textContent  = shipping === 0 ? 'FREE' : 'Rs. ' + shipping;
+    document.getElementById('sumDiscount').textContent  = discount > 0 ? '− Rs. ' + discount.toLocaleString('en-PK') : 'Rs. 0';
+    document.getElementById('sumTotal').textContent     = 'Rs. ' + total.toLocaleString('en-PK');
+  }
+
+  // ── CHANGE QUANTITY ──
+  function changeQty(i, delta) {
+    cart[i].qty += delta;
+    if (cart[i].qty <= 0) { removeItem(i); return; }
+    saveAndRender();
+  }
+
+  function setQty(i, val) {
+    const v = parseInt(val);
+    if (!v || v < 1) { cart[i].qty = 1; } else { cart[i].qty = v; }
+    saveAndRender();
+  }
+
+  // ── REMOVE ITEM ──
+  function removeItem(i) {
+    const el = document.getElementById('ci' + i);
+    if (el) { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }
+    setTimeout(() => { cart.splice(i, 1); saveAndRender(); }, 300);
+  }
+
+  // ── SAVE + RE-RENDER ──
+  function saveAndRender() {
+    localStorage.setItem('nsh_cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  // ── COUPON ──
+  function applyCoupon() {
+    const code = document.getElementById('couponInput').value.trim().toUpperCase();
+    const codes = { 'SHELTON10': 500, 'WINTER20': 1000, 'NEWUSER': 300 };
+    if (codes[code]) {
+      discount = codes[code];
+      showToast('Coupon applied! You saved Rs. ' + discount + ' ✓');
+      updateSummary();
+    } else {
+      showToast('Invalid coupon code. Try: SHELTON10');
+    }
+  }
+
+  // ── GO TO CHECKOUT (checks login) ──
+  function goToCheckout() {
+    if (cart.length === 0) { showToast('Your bag is empty!'); return; }
+    const loggedIn = localStorage.getItem('nsh_user');
+    if (loggedIn) {
+      window.location.href = '/checkout.html';
+    } else {
+      openLoginModal();
+    }
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('on');
+    setTimeout(() => t.classList.remove('on'), 2800);
+  }
+
+  // ── LOGIN MODAL ──
+  function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('loginModal').addEventListener('click', function(e) {
+    if (e.target === this) closeLoginModal();
+  });
+
+  function switchTab(tab) {
+    document.getElementById('mLoginForm').style.display = tab === 'login'    ? 'block' : 'none';
+    document.getElementById('mRegForm').style.display   = tab === 'register' ? 'block' : 'none';
+    const tl = document.getElementById('mTabLogin'), tr = document.getElementById('mTabReg');
+    if (tab === 'login') {
+      tl.style.color = '#c4736a'; tl.style.borderBottom = '2px solid #c4736a';
+      tr.style.color = '#7a7470'; tr.style.borderBottom = '2px solid transparent';
+    } else {
+      tr.style.color = '#c4736a'; tr.style.borderBottom = '2px solid #c4736a';
+      tl.style.color = '#7a7470'; tl.style.borderBottom = '2px solid transparent';
+    }
+  }
+
+  async function modalLogin() {
+    const email = document.getElementById('mEmail').value.trim();
+    const pass  = document.getElementById('mPass').value;
+    const err   = document.getElementById('mLoginErr');
+    err.style.display = 'none';
+    if (!email || !pass) { err.textContent = 'Please fill all fields.'; err.style.display = 'block'; return; }
+    try {
+      const res  = await fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password:pass}) });
+      const data = await res.json();
+      if (data.success) { localStorage.setItem('nsh_user', JSON.stringify(data.user)); window.location.href = '/checkout.html'; }
+      else { err.textContent = data.message; err.style.display = 'block'; }
+    } catch {
+      const users = JSON.parse(localStorage.getItem('nsh_users') || '[]');
+      const user  = users.find(u => u.email === email && u.password === pass);
+      if (user) { localStorage.setItem('nsh_user', JSON.stringify({name: user.first_name, email})); window.location.href = '/checkout.html'; }
+      else if (email && pass.length >= 4) {
+        localStorage.setItem('nsh_user', JSON.stringify({name: email.split('@')[0], email}));
+        window.location.href = '/checkout.html';
+      } else { err.textContent = 'Invalid email or password.'; err.style.display = 'block'; }
+    }
+  }
+
+  async function modalRegister() {
+    const fname = document.getElementById('mFname').value.trim();
+    const lname = document.getElementById('mLname').value.trim();
+    const email = document.getElementById('mRegEmail').value.trim();
+    const pass  = document.getElementById('mRegPass').value;
+    const err   = document.getElementById('mRegErr');
+    err.style.display = 'none';
+    if (!fname || !email || !pass) { err.textContent = 'Please fill all fields.'; err.style.display = 'block'; return; }
+    if (pass.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+    try {
+      const res  = await fetch('/api/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({first_name:fname, last_name:lname, email, password:pass, confirm_password:pass}) });
+      const data = await res.json();
+      if (data.success) { localStorage.setItem('nsh_user', JSON.stringify({name:fname, email})); window.location.href = '/checkout.html'; }
+      else { err.textContent = data.message; err.style.display = 'block'; }
+    } catch {
+      const users = JSON.parse(localStorage.getItem('nsh_users') || '[]');
+      if (users.find(u => u.email === email)) { err.textContent = 'Email already registered.'; err.style.display = 'block'; return; }
+      users.push({first_name:fname, last_name:lname, email, password:pass});
+      localStorage.setItem('nsh_users', JSON.stringify(users));
+      localStorage.setItem('nsh_user', JSON.stringify({name:fname, email}));
+      window.location.href = '/checkout.html';
+    }
+  }
+
+  // ── SHOW USER IN NAV ──
+  window.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('nsh_user') || 'null');
+    if (user) {
+      const strip = document.createElement('div');
+      strip.style.cssText = 'background:#0d0b0e;color:#fff;text-align:center;padding:10px;font-size:.78rem;letter-spacing:.08em;';
+      strip.innerHTML = '<i class="fas fa-user-check" style="color:#b8966a;margin-right:8px;"></i>Logged in as <strong style="color:#b8966a;">' + user.name + '</strong>';
+      document.body.insertBefore(strip, document.body.firstChild);
+    }
+    renderCart();
+  });
+</script>
+</body>
+</html>
